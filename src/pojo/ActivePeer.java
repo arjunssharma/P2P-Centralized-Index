@@ -4,12 +4,13 @@ public class ActivePeer {
 
 	private String hostName;
 	private Integer index;
-
-	public ActivePeer(String hostName, Integer portNo) {
-		this.hostName = hostName;
-		this.index = portNo;
-	}
 	
+	public ActivePeer(String hostName, Integer index) {
+		super();
+		this.hostName = hostName;
+		this.index = index;
+	}
+
 	public String getHostName() {
 		return hostName;
 	}
