@@ -53,14 +53,32 @@ public class P2PServer extends P2PAbstract implements Runnable {
 					message.add(input.readLine()); //Port: 5678
 					message.add(input.readLine()); //Title: A Proferred Official ICP
 					int code = addRFC(message, output);
-					if(code != 1) {
+					if(code != 1)
 						responseCode(output, code);
+				}
+				else if(line.startsWith("LIST ALL")) {
+					message.add(line); //LIST ALL P2P-CI/1.0
+					message.add(input.readLine()); //Host: thishost.csc.ncsu.edu
+					message.add(input.readLine()); //Port: 5678
+					
+				}
+				else if(line.startsWith("LOOKUP")) {
+					message.add(line); //LOOKUP RFC 3457 P2P-CI/1.0
+					message.add(input.readLine()); //Host: thishost.csc.ncsu.edu
+					message.add(input.readLine()); //Port: 5678
+					message.add(input.readLine()); //Title: Requirements for IPsec Remote Access Scenarios
+					Integer clientRequestRFCNumber = Integer.valueOf(message.get(0).split(" ")[2]);
+					String clientRequestTitle = message.get(3).split(": ")[1];
+					for(RFCIndex rfc : rfcIndexList) {
+						if(rfc.getRFCNumber().equals(clientRequestRFCNumber) || rfc.getTitle().equals(clientRequestTitle)) {
+							
+						}
 					}
 				}
 			}
 		}
 		catch(Exception ex) {
-			
+			ex.printStackTrace();
 		}
 	}
 	
