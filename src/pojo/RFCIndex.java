@@ -6,11 +6,11 @@ public class RFCIndex {
 	private String title;
 	private String RFCHostName;
 
-	public RFCIndex(Integer rFCNumber, String title, String rFCHostName) {
+	public RFCIndex(Integer RFCNumber, String title, String RFCHostName) {
 		super();
-		RFCNumber = rFCNumber;
+		this.RFCNumber = RFCNumber;
 		this.title = title;
-		RFCHostName = rFCHostName;
+		this.RFCHostName = RFCHostName;
 	}
 
 	public Integer getRFCNumber() {

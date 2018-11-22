@@ -1,5 +1,35 @@
 package p2pserver;
 
-public interface Server {
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+import pojo.ActivePeer;
+import pojo.RFCIndex;
+
+public class Server {
+
+	public static List<ActivePeer> activePeerList = Collections.synchronizedList(new ArrayList<ActivePeer>());
+	public static List<RFCIndex> rfcIndexList = Collections.synchronizedList(new ArrayList<RFCIndex>());
+	public static final int PORT_NUMBER = 7734; //as mentioned in the project 1 doc
 	
+	public static void main(String args[]) throws Exception {		
+		ServerSocket accept_socket =  new ServerSocket(PORT_NUMBER);
+		try {
+			while(true) {
+				Socket sock = accept_socket.accept();
+				Runnable p2p_server = new P2PServer(activePeerList, rfcIndexList, sock);
+				Thread thread = new Thread(p2p_server);
+				thread.start();
+			}
+		}
+		catch(Exception ex) {
+			throw new Exception(ex.getMessage());
+		}
+		finally {
+			accept_socket.close();
+		}
+	}
 }
