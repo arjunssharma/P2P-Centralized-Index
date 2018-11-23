@@ -33,9 +33,9 @@ public class P2PServer extends P2PAbstract implements Runnable {
 			
 			String line;
 			List<String> message = new ArrayList<>();
-			while((line = input.readLine()) != null) {
-				message.add(line);
-			}
+			output.println("Enter host name and port number");
+			message.add(input.readLine());
+			message.add(input.readLine());
 			
 			//provide host name and port number of client
 			String hostName = message.get(0);
