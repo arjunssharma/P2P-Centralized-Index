@@ -10,7 +10,7 @@ import java.util.List;
 import pojo.ActivePeer;
 import pojo.RFCIndex;
 
-public class P2PServer extends P2PAbstract implements Runnable {
+public class P2PServer extends P2PServerAbstract implements Runnable {
 
 	public P2PServer(List<ActivePeer> activePeerList, List<RFCIndex> rfcIndexList, Socket sock) {
 		super();
@@ -50,16 +50,18 @@ public class P2PServer extends P2PAbstract implements Runnable {
 					int code = addRFC(message, output);
 					if (code != 1)
 						output.println(responseCode(code));
+					output.println(EOF);
 				} 
 				else if (line.startsWith("LIST ALL")) {
 					message.add(line); // LIST ALL P2P-CI/1.0
 					//message.add(input.readLine()); // Host: thishost.csc.ncsu.edu
 					//message.add(input.readLine()); // Port: 5678
-					if(!message.get(0).equals(VERSION)) {
-						output.println(responseCode(-1));
-						break;
-					}
+//					if(!message.get(0).equals(VERSION)) {
+//						output.println(responseCode(-1));
+//						break;
+//					}
 					
+					output.println(rfcIndexList.size());
 					for (RFCIndex rfc : rfcIndexList) {
 						output.println(rfc.getRFCNumber() + " " + rfc.getTitle() + " " + rfc.getRFCHostName());
 					}
@@ -92,6 +94,7 @@ public class P2PServer extends P2PAbstract implements Runnable {
 					} else {
 						output.println(responseCode(code));
 					}
+					output.println(EOF);
 				} else if (line.startsWith("END")) {
 					socket.close();
 					break;
@@ -99,6 +102,8 @@ public class P2PServer extends P2PAbstract implements Runnable {
 				else {
 					output.println("Invalid Request");
 				}
+				
+				output.flush();
 			}
 		} catch (Exception ex) {
 			ex.printStackTrace();
@@ -149,7 +154,6 @@ public class P2PServer extends P2PAbstract implements Runnable {
 		RFCIndex rfc = new RFCIndex(RFCNumber, title, RFCHostName);
 		rfcIndexList.add(rfc);
 		output.println(responseCode(1) + "\nRFC " + RFCNumber + " " + title + " " + RFCHostName + " " + port);
-
 		return 1;
 	}
 }

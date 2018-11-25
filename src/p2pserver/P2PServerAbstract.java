@@ -7,7 +7,7 @@ import java.util.List;
 import pojo.ActivePeer;
 import pojo.RFCIndex;
 
-public abstract class P2PAbstract {
+public abstract class P2PServerAbstract {
 
 	List<ActivePeer> activePeerList;
 	List<RFCIndex> rfcIndexList;
@@ -17,7 +17,8 @@ public abstract class P2PAbstract {
 	public final String BAD_VERSION = "505 " + VERSION + " Version Not Supported";
 	public final String NOT_FOUND = "404 Not Found";
 	public final String OK_STATUS = VERSION + " 200 OK";
-
+	public final String EOF = "EOF";
+	
 	public String responseCode(int code) {
 		if (code == 0)
 			return BAD_REQUEST;
