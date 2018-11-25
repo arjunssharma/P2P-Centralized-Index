@@ -11,9 +11,9 @@ import pojo.RFCIndex;
 
 public class Server {
 
-	public static List<ActivePeer> activePeerList = Collections.synchronizedList(new ArrayList<ActivePeer>());
-	public static List<RFCIndex> rfcIndexList = Collections.synchronizedList(new ArrayList<RFCIndex>());
-	public static final int PORT_NUMBER = 7734; //as mentioned in the project 1 doc
+	private static List<ActivePeer> activePeerList = Collections.synchronizedList(new ArrayList<ActivePeer>());
+	private static List<RFCIndex> rfcIndexList = Collections.synchronizedList(new ArrayList<RFCIndex>());
+	private static final int PORT_NUMBER = 7734; //as mentioned in the project 1 doc
 	
 	public static void main(String args[]) throws Exception {		
 		ServerSocket accept_socket =  new ServerSocket(PORT_NUMBER);

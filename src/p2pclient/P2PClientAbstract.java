@@ -1,17 +1,11 @@
-package p2pserver;
+package p2pclient;
 
 import java.io.PrintWriter;
-import java.net.Socket;
-import java.util.List;
+import java.net.ServerSocket;
 
-import pojo.ActivePeer;
-import pojo.RFCIndex;
+public class P2PClientAbstract {
 
-public class P2PAbstract {
-
-	List<ActivePeer> activePeerList;
-	List<RFCIndex> rfcIndexList;
-	Socket socket;
+	ServerSocket clientUploadServer;
 	public final String VERSION = "P2P-CI/1.0";
 	public final String BAD_REQUEST = "400 Bad Request";
 	public final String BAD_VERSION = "505 " + VERSION + " Version Not Supported";
