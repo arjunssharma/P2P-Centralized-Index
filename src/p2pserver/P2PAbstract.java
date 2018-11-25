@@ -7,7 +7,7 @@ import java.util.List;
 import pojo.ActivePeer;
 import pojo.RFCIndex;
 
-public class P2PAbstract {
+public abstract class P2PAbstract {
 
 	List<ActivePeer> activePeerList;
 	List<RFCIndex> rfcIndexList;
@@ -18,14 +18,18 @@ public class P2PAbstract {
 	public final String NOT_FOUND = "404 Not Found";
 	public final String OK_STATUS = VERSION + " 200 OK";
 
-	public void responseCode(PrintWriter output, int code) {
+	public String responseCode(int code) {
 		if (code == 0)
-			output.println(BAD_REQUEST);
+			return BAD_REQUEST;
 		else if (code == -1)
-			output.println(BAD_VERSION);
+			return BAD_VERSION;
 		else if (code == 1)
-			output.println(OK_STATUS);
+			return OK_STATUS;
 		else if (code == -2)
-			output.println(NOT_FOUND);
+			return NOT_FOUND;
+		else
+			return new String("Error with response codes");
 	}
+	
+	public abstract int addRFC(List<String> message, PrintWriter output);
 }

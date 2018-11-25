@@ -28,7 +28,7 @@ public class P2PServer extends P2PAbstract implements Runnable {
 
 			String line;
 			List<String> message = new ArrayList<>();
-			output.println("Enter host name and port number");
+			//output.println("Enter host name and port number");
 			message.add(input.readLine());
 			message.add(input.readLine());
 
@@ -38,7 +38,7 @@ public class P2PServer extends P2PAbstract implements Runnable {
 			ActivePeer peer = new ActivePeer(hostName, portNumber);
 			activePeerList.add(peer);
 			output.println(peer.getHostName() + " added to the active list");
-			output.println("Enter ADD, LIST ALL, LOOKUP or END");
+			output.println("ENTER ADD, LIST ALL, LOOKUP, GET or END requests");
 			while (true) {
 				message = new ArrayList<>();
 				line = input.readLine();
@@ -49,14 +49,14 @@ public class P2PServer extends P2PAbstract implements Runnable {
 					message.add(input.readLine()); // Title: A Proferred Official ICP
 					int code = addRFC(message, output);
 					if (code != 1)
-						responseCode(output, code);
+						output.println(responseCode(code));
 				} 
 				else if (line.startsWith("LIST ALL")) {
 					message.add(line); // LIST ALL P2P-CI/1.0
-					message.add(input.readLine()); // Host: thishost.csc.ncsu.edu
-					message.add(input.readLine()); // Port: 5678
+					//message.add(input.readLine()); // Host: thishost.csc.ncsu.edu
+					//message.add(input.readLine()); // Port: 5678
 					if(!message.get(0).equals(VERSION)) {
-						responseCode(output, -1);
+						output.println(responseCode(-1));
 						break;
 					}
 					
@@ -90,7 +90,7 @@ public class P2PServer extends P2PAbstract implements Runnable {
 					if (code == 1) {
 						output.println(lookUpList.toString());
 					} else {
-						responseCode(output, code);
+						output.println(responseCode(code));
 					}
 				} else if (line.startsWith("END")) {
 					socket.close();
@@ -109,7 +109,7 @@ public class P2PServer extends P2PAbstract implements Runnable {
 	// Host: thishost.csc.ncsu.edu
 	// Port: 5678
 	// Title: A Proferred Official ICP
-	private int addRFC(List<String> message, PrintWriter output) {
+	public int addRFC(List<String> message, PrintWriter output) {
 		Integer RFCNumber = null;
 		Integer port = null;
 		String title = null;
@@ -121,9 +121,11 @@ public class P2PServer extends P2PAbstract implements Runnable {
 				try {
 					if (split[1].equals("RFC")) {
 						RFCNumber = Integer.parseInt(split[2]);
-					} else if (!split[1].equals("RFC")) {
+					} 
+					if (!split[1].equals("RFC")) {
 						return 0;
-					} else if (!split[3].equals(VERSION)) {
+					} 
+					if (!split[3].equals(VERSION)) {
 						return -1;
 					}
 				} catch (Exception ex) {
@@ -146,8 +148,7 @@ public class P2PServer extends P2PAbstract implements Runnable {
 
 		RFCIndex rfc = new RFCIndex(RFCNumber, title, RFCHostName);
 		rfcIndexList.add(rfc);
-		responseCode(output, 1);
-		output.println("RFC " + RFCNumber + " " + title + " " + RFCHostName + " " + port);
+		output.println(responseCode(1) + "\nRFC " + RFCNumber + " " + title + " " + RFCHostName + " " + port);
 
 		return 1;
 	}
