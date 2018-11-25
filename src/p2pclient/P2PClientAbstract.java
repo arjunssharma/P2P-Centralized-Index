@@ -1,25 +1,27 @@
 package p2pclient;
 
-import java.io.PrintWriter;
 import java.net.ServerSocket;
 
-public class P2PClientAbstract {
+public abstract class P2PClientAbstract {
 
 	ServerSocket clientUploadServer;
-	public final String VERSION = "P2P-CI/1.0";
-	public final String BAD_REQUEST = "400 Bad Request";
-	public final String BAD_VERSION = "505 " + VERSION + " Version Not Supported";
-	public final String NOT_FOUND = "404 Not Found";
-	public final String OK_STATUS = VERSION + " 200 OK";
+	public static final String VERSION = "P2P-CI/1.0";
+	public static final String BAD_REQUEST = "400 Bad Request";
+	public static final String BAD_VERSION = "505 " + VERSION + " Version Not Supported";
+	public static final String NOT_FOUND = "404 Not Found";
+	public static final String OK_STATUS = VERSION + " 200 OK";
 
-	public void responseCode(PrintWriter output, int code) {
+	public static String responseCode(int code) {
 		if (code == 0)
-			output.println(BAD_REQUEST);
+			return BAD_REQUEST;
 		else if (code == -1)
-			output.println(BAD_VERSION);
+			return BAD_VERSION;
 		else if (code == 1)
-			output.println(OK_STATUS);
+			return OK_STATUS;
 		else if (code == -2)
-			output.println(NOT_FOUND);
+			return NOT_FOUND;
+		else
+			return new String("Error with response codes");
 	}
+
 }
