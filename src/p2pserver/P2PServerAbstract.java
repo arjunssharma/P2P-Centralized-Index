@@ -2,13 +2,18 @@ package p2pserver;
 
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import pojo.ActivePeer;
 import pojo.RFCIndex;
 
 public abstract class P2PServerAbstract {
 
+	Map<String, Integer> hostToPortMap;
+	Map<Integer, String> rfcNumberToTitleMap;
 	List<ActivePeer> activePeerList;
 	List<RFCIndex> rfcIndexList;
 	Socket socket;

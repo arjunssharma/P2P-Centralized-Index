@@ -1,6 +1,8 @@
 package p2pclient;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
@@ -8,9 +10,10 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 public class P2PClient extends P2PClientAbstract implements Runnable {
-
-	public P2PClient(ServerSocket clientUploadServer) {
+	
+	public P2PClient(ServerSocket clientUploadServer, String clientName) {
 		super();
+		this.clientName = clientName;
 		this.clientUploadServer = clientUploadServer;
 	}
 
@@ -19,32 +22,46 @@ public class P2PClient extends P2PClientAbstract implements Runnable {
 		// TODO Auto-generated method stub
 		Socket another_client_request = null;
 		
-		try {
-			another_client_request = clientUploadServer.accept();
-			BufferedReader input_from_client = new BufferedReader(new InputStreamReader(another_client_request.getInputStream()));
-			PrintWriter output_to_client = new PrintWriter(another_client_request.getOutputStream(), true); 
-			System.out.println("Client to Client connection successful");
-			
-			while(true) {
+		while(true) {
+			try {
+				another_client_request = clientUploadServer.accept();
+				BufferedReader input_from_client = new BufferedReader(new InputStreamReader(another_client_request.getInputStream()));
+				PrintWriter output_to_client = new PrintWriter(another_client_request.getOutputStream(), true); 
+				output_to_client.println("Connection made with client");
 				
-			}
-			//GET RFC 1234 P2P-CI/1.0
-			//Host: somehost.csc.ncsu.edu
-			//OS: Mac OS 10.4.1
-			
-			
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} finally {
-			if(another_client_request != null)
-				try {
-					another_client_request.close();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+				String fileName = input_from_client.readLine();
+				boolean exists = new File(System.getProperty("user.dir") + "/" + this.clientName + "/" + fileName).exists();
+				if(!exists) {
+					output_to_client.println("Request RFC file doesn't exist");
+					output_to_client.println(EOF);
+					continue;
 				}
+				
+				File file = new File(System.getProperty("user.dir") + "/" + clientName + "/" + fileName);
+				BufferedReader br = new BufferedReader(new FileReader(file));
+				String line;
+				while((line = br.readLine()) != null) {
+					output_to_client.println(line);
+				}
+				
+				output_to_client.println(EOF);
+				if(br != null)
+					br.close();
+				
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} finally {
+				if(another_client_request != null)
+					try {
+						another_client_request.close();
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+			}
 		}
+		
 		
 	}
 

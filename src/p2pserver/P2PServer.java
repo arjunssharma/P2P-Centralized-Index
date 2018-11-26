@@ -5,7 +5,9 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import pojo.ActivePeer;
 import pojo.RFCIndex;
@@ -69,33 +71,36 @@ public class P2PServer extends P2PServerAbstract implements Runnable {
 				else if (line.startsWith("LOOKUP")) {
 					int code = -2; // not found
 					Integer port = null;
-					StringBuilder lookUpList = new StringBuilder();
+					Set<String> set = new HashSet<>();
 					message.add(line); // LOOKUP RFC 3457 P2P-CI/1.0
 					message.add(input.readLine()); // Host: thishost.csc.ncsu.edu
-					message.add(input.readLine()); // Port: 5678
 					message.add(input.readLine()); // Title: Requirements for IPsec Remote Access Scenarios
 					Integer clientRequestRFCNumber = Integer.valueOf(message.get(0).split(" ")[2]);
-					String clientRequestTitle = message.get(3).split(": ")[1];
+					String clientRequestHostName = message.get(1).split(" ")[1];
+					String clientRequestTitle = message.get(2).split(": ")[1];
 					for (RFCIndex rfc : rfcIndexList) {
-						if (rfc.getRFCNumber().equals(clientRequestRFCNumber) || rfc.getTitle().equals(clientRequestTitle)) {
+						if (rfc.getRFCNumber().equals(clientRequestRFCNumber) || rfc.getTitle().equals(clientRequestTitle) || rfc.getRFCHostName().equals(clientRequestHostName)) {
 							for (ActivePeer ap : activePeerList) {
 								if (ap.getHostName().equals(rfc.getRFCHostName())) {
 									port = ap.getIndex();
 								}
 							}
 
-							lookUpList.append("Host: " + rfc.getRFCHostName() + "\nPort: " + String.valueOf(port));
+							set.add("Host: " + rfc.getRFCHostName() + "\nPort: " + String.valueOf(port));
 							code = 1;
 						}
 					}
-
+					
 					if (code == 1) {
-						output.println(lookUpList.toString());
+						for(String str : set)
+							output.println(str);
 					} else {
 						output.println(responseCode(code));
 					}
 					output.println(EOF);
 				} else if (line.startsWith("END")) {
+					output.println("Connection Closed with Server");
+					output.println(EOF);
 					socket.close();
 					break;
 				}
