@@ -122,19 +122,16 @@ public class Client extends P2PClientAbstract {
 			}
 			else if(line.startsWith("END")) {
 				output_to_server.println(line);
+				output_to_server.println(host_name);
 				String s;
 				while (!(s = input_from_server.readLine()).equals(EOF))
 					System.out.println(s);
-				break;
+				System.exit(1);
 			}
 			else {
 				System.out.println("Invalid Command! Try Again.");
 			}
 			//System.out.println("ENTER ADD, LIST ALL, LOOKUP, GET or END requests");
 		}
-		
-		
-		if(client_connection != null)
-			client_connection.close();
 	}
 }
