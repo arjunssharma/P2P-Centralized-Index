@@ -6,6 +6,7 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -49,6 +50,11 @@ public class P2PServer extends P2PServerAbstract implements Runnable {
 					message.add(input.readLine()); // Host: thishost.csc.ncsu.edu
 					message.add(input.readLine()); // Port: 5678
 					message.add(input.readLine()); // Title: A Proferred Official ICP
+					
+					System.out.println("------------------- Add request from peer -------------------");
+					for(int i = 0; i < message.size(); i++)
+						System.out.println(message.get(i));
+					
 					int code = addRFC(message, output);
 					if (code != 1)
 						output.println(responseCode(code));
@@ -63,6 +69,10 @@ public class P2PServer extends P2PServerAbstract implements Runnable {
 //						break;
 //					}
 					
+					System.out.println("------------------- List all request from peer -------------------");
+					for(int i = 0; i < message.size(); i++)
+						System.out.println(message.get(i));
+					
 					output.println(rfcIndexList.size());
 					for (RFCIndex rfc : rfcIndexList) {
 						output.println(rfc.getRFCNumber() + " " + rfc.getTitle() + " " + rfc.getRFCHostName());
@@ -75,6 +85,11 @@ public class P2PServer extends P2PServerAbstract implements Runnable {
 					message.add(line); // LOOKUP RFC 3457 P2P-CI/1.0
 					message.add(input.readLine()); // Host: thishost.csc.ncsu.edu
 					message.add(input.readLine()); // Title: Requirements for IPsec Remote Access Scenarios
+					
+					System.out.println("------------------- Lookup request from peer -------------------");
+					for(int i = 0; i < message.size(); i++)
+						System.out.println(message.get(i));
+					
 					Integer clientRequestRFCNumber = Integer.valueOf(message.get(0).split(" ")[2]);
 					String clientRequestHostName = message.get(1).split(" ")[1];
 					String clientRequestTitle = message.get(2).split(": ")[1];
@@ -99,12 +114,31 @@ public class P2PServer extends P2PServerAbstract implements Runnable {
 					}
 					output.println(EOF);
 				} else if (line.startsWith("END")) {
+					String host_name = input.readLine();	
+					if (activePeerList != null) {
+						Iterator<ActivePeer> it = activePeerList.iterator();
+						while(it.hasNext()) {
+							if(it.next().getHostName().equals(host_name))
+								it.remove();
+						}
+					}
+
+					if (rfcIndexList != null) {
+						Iterator<RFCIndex> it = rfcIndexList.iterator();
+						while(it.hasNext()) {
+							if(it.next().getRFCHostName().equals(host_name))
+								it.remove();
+						}
+					}
+					
+					System.out.println("------------------- End request from peer. Connection closed with the peer -------------------");
 					output.println("Connection Closed with Server");
 					output.println(EOF);
 					socket.close();
 					break;
 				}
 				else {
+					System.out.println("------------------- Invalid Request -------------------");
 					output.println("Invalid Request");
 				}
 				
