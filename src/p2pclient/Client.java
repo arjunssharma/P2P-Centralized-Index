@@ -11,7 +11,7 @@ import java.util.List;
 
 public class Client extends P2PClientAbstract {
 
-	private static final String SERVER_ADDRESS = "127.0.0.1";
+	//private static final String SERVER_ADDRESS = "127.0.0.1";
 	private static final int PORT_NUMBER = 7734;
 	//private static Map<String, Integer> hostToPortMap = new HashMap<>();
 	//private static Map<Integer, String> rfcNumberToTitleMap = new HashMap<>();
@@ -20,14 +20,14 @@ public class Client extends P2PClientAbstract {
 		//boolean exists = new File(System.getProperty("user.dir") + "/" + "one.ncsu.edu" + "/" + "123.txt").exists();
 		//System.out.println(exists);
 		//System.out.println(System.getProperty("user.dir"));
-		Socket client_connection = new Socket(SERVER_ADDRESS, PORT_NUMBER); // host name & port number
-		BufferedReader input_from_server = new BufferedReader(new InputStreamReader(client_connection.getInputStream()));
-		PrintWriter output_to_server = new PrintWriter(client_connection.getOutputStream(), true);
 
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		System.out.println("Enter host name of client");
 		String host_name = br.readLine();
 		System.out.println("Enter Upload port of client");
+		Socket client_connection = new Socket(host_name, PORT_NUMBER); // host name & port number
+		BufferedReader input_from_server = new BufferedReader(new InputStreamReader(client_connection.getInputStream()));
+		PrintWriter output_to_server = new PrintWriter(client_connection.getOutputStream(), true);
 		Integer uploadPort = Integer.valueOf(br.readLine());
 		ServerSocket clientUploadServer = new ServerSocket(uploadPort);
 		Runnable p2p_client = new P2PClient(clientUploadServer, host_name);
@@ -96,7 +96,7 @@ public class Client extends P2PClientAbstract {
 				System.out.println("Enter Port Number");
 				Integer portify = Integer.valueOf(br.readLine());
 				Integer RFCNumber = Integer.valueOf(message.get(0).split(" ")[2]);
-				Socket clientToclientRequest = new Socket(SERVER_ADDRESS, portify);
+				Socket clientToclientRequest = new Socket(message.get(1).split(" ")[1], portify);
 				BufferedReader input_from_client = new BufferedReader(new InputStreamReader(clientToclientRequest.getInputStream()));
 				PrintWriter output_to_client = new PrintWriter(clientToclientRequest.getOutputStream(), true);				
 				System.out.println(input_from_client.readLine());
