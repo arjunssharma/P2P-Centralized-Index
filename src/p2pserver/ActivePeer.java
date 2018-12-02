@@ -1,4 +1,4 @@
-package pojo;
+package p2pserver;
 
 public class ActivePeer {
 

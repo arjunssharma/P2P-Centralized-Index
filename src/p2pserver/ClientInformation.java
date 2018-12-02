@@ -1,16 +1,16 @@
-package pojo;
+package p2pserver;
 
-public class RFCIndex {
+public class ClientInformation {
 
 	private Integer RFCNumber;
-	private String title;
+	private Integer port;
 	private String RFCHostName;
 
-	public RFCIndex(Integer RFCNumber, String title, String RFCHostName) {
+	public ClientInformation(Integer rFCNumber, Integer port, String rFCHostName) {
 		super();
-		this.RFCNumber = RFCNumber;
-		this.title = title;
-		this.RFCHostName = RFCHostName;
+		RFCNumber = rFCNumber;
+		this.port = port;
+		RFCHostName = rFCHostName;
 	}
 
 	public Integer getRFCNumber() {
@@ -21,12 +21,12 @@ public class RFCIndex {
 		RFCNumber = rFCNumber;
 	}
 
-	public String getTitle() {
-		return title;
+	public Integer getPort() {
+		return port;
 	}
 
-	public void setTitle(String title) {
-		this.title = title;
+	public void setPort(Integer port) {
+		this.port = port;
 	}
 
 	public String getRFCHostName() {

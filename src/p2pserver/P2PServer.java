@@ -10,9 +10,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import pojo.ActivePeer;
-import pojo.RFCIndex;
-
 public class P2PServer extends P2PServerAbstract implements Runnable {
 
 	public P2PServer(List<ActivePeer> activePeerList, List<RFCIndex> rfcIndexList, Socket sock) {

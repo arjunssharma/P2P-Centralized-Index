@@ -6,9 +6,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import pojo.ActivePeer;
-import pojo.RFCIndex;
-
 public class Server {
 
 	private static List<ActivePeer> activePeerList = Collections.synchronizedList(new ArrayList<ActivePeer>());

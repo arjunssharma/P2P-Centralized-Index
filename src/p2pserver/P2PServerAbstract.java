@@ -7,9 +7,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import pojo.ActivePeer;
-import pojo.RFCIndex;
-
 public abstract class P2PServerAbstract {
 
 	Map<String, Integer> hostToPortMap;
