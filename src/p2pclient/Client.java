@@ -11,7 +11,7 @@ import java.util.List;
 
 public class Client extends P2PClientAbstract {
 
-	//private static final String SERVER_ADDRESS = "127.0.0.1";
+	private static String SERVER_ADDRESS;
 	private static final int PORT_NUMBER = 7734;
 	//private static Map<String, Integer> hostToPortMap = new HashMap<>();
 	//private static Map<Integer, String> rfcNumberToTitleMap = new HashMap<>();
@@ -22,12 +22,15 @@ public class Client extends P2PClientAbstract {
 		//System.out.println(System.getProperty("user.dir"));
 
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		System.out.println("Enter Server Address");
+		SERVER_ADDRESS = br.readLine();
+		Socket client_server_connection = new Socket(SERVER_ADDRESS, PORT_NUMBER); // host name & port number
+		BufferedReader input_from_server = new BufferedReader(new InputStreamReader(client_server_connection.getInputStream()));
+		PrintWriter output_to_server = new PrintWriter(client_server_connection.getOutputStream(), true);
+		
 		System.out.println("Enter host name of client");
 		String host_name = br.readLine();
 		System.out.println("Enter Upload port of client");
-		Socket client_connection = new Socket(host_name, PORT_NUMBER); // host name & port number
-		BufferedReader input_from_server = new BufferedReader(new InputStreamReader(client_connection.getInputStream()));
-		PrintWriter output_to_server = new PrintWriter(client_connection.getOutputStream(), true);
 		Integer uploadPort = Integer.valueOf(br.readLine());
 		ServerSocket clientUploadServer = new ServerSocket(uploadPort);
 		Runnable p2p_client = new P2PClient(clientUploadServer, host_name);
@@ -126,6 +129,9 @@ public class Client extends P2PClientAbstract {
 				String s;
 				while (!(s = input_from_server.readLine()).equals(EOF))
 					System.out.println(s);
+				
+				if(client_server_connection != null)
+					client_server_connection.close();
 				System.exit(1);
 			}
 			else {

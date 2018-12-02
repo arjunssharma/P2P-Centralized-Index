@@ -30,6 +30,11 @@ public class P2PClient extends P2PClientAbstract implements Runnable {
 				output_to_client.println("Connection made with client");
 				
 				String fileName = input_from_client.readLine();
+				
+				File dir = new File(System.getProperty("user.dir") + "/" + this.clientName);
+				if (!dir.exists()) 
+					dir.mkdirs();
+				
 				boolean exists = new File(System.getProperty("user.dir") + "/" + this.clientName + "/" + fileName).exists();
 				if(!exists) {
 					output_to_client.println("Request RFC file doesn't exist");
