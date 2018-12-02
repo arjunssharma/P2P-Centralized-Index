@@ -1,5 +1,4 @@
-javac src/p2pclient/*.java
-javac src/p2pserver/*.java
+javac src/*.java
+cd src
 
-cd src/p2pserver
 java Server

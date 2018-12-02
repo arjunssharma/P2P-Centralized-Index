@@ -1,4 +1,4 @@
-package p2pserver;
+
 
 public class ClientInformation {
 
