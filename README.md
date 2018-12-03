@@ -12,6 +12,39 @@
 6) Instance 3: execute "Client" and so on.
 
 **PS:** All the Client requests are logged in Server console. Refer Makefile for code execution or IP tables update.
+<br />
+<br />
+
+#Commands Sample:
+-----------------
+
+**a) ADD:**<br />
+ADD RFC 123 P2P-CI/1.0<br />
+Host: 152.46.16.248<br />
+Port: 3000<br />
+Title: A Proferred Official ICP<br />
+<br />
+
+**b) LIST ALL**<br />
+LIST ALL P2P-CI/1.0<br />
+<br />
+
+**c) LOOK UP**<br />
+LOOKUP RFC 123 P2P-CI/1.0<br />
+Host: 152.46.16.248<br />
+Title: A Proferred Official ICP<br />
+<br />
+
+**d) GET**<br />
+GET RFC 123 P2P-CI/1.0<br />
+Host: 152.46.16.248<br />
+OS: Mac OS 10.4.1<br />
+<br />
+
+**e) Client wants to Exit:**<br />
+END<br />
+<br />
+<br />
 
 #CSC-573 Internet Protocols Project 1 Fall 2018
 -----------------------------------------------
