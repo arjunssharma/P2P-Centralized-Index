@@ -10,8 +10,6 @@
 6) Instance 3: execute "Client" and so on.
 7) All the Client requests are logged in Server console.
 
-
-
 #CSC-573 Internet Protocols Project 1 Fall 2018
 -----------------------------------------------
 
