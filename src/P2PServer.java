@@ -80,6 +80,7 @@ public class P2PServer extends P2PServerAbstract implements Runnable {
 					}
 				} 
 				else if (line.startsWith("GET")) {
+					System.out.println("------------------- GET request from peer -------------------");
 					message.add(line); //Host: one.ncsu.edu
 					message.add(input.readLine());
 					String clientRequestHostName = message.get(1).split(" ")[1];
