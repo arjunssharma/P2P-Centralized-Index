@@ -96,10 +96,17 @@ public class Client extends P2PClientAbstract {
 					continue;
 				}
 				
-				System.out.println("Enter Port Number");
-				Integer portify = Integer.valueOf(br.readLine());
+				output_to_server.println(line);
+				//System.out.println("Enter Port Number of Client with RFC from LOOK UP request");
+				output_to_server.println(message.get(1));
+				String portify = input_from_server.readLine();
+				if(portify == null || portify.equals("")) {
+					System.out.println("Port number not found in RFC list");
+					continue;
+				}
+				
 				Integer RFCNumber = Integer.valueOf(message.get(0).split(" ")[2]);
-				Socket clientToclientRequest = new Socket(message.get(1).split(" ")[1], portify);
+				Socket clientToclientRequest = new Socket(message.get(1).split(" ")[1], Integer.valueOf(portify));
 				BufferedReader input_from_client = new BufferedReader(new InputStreamReader(clientToclientRequest.getInputStream()));
 				PrintWriter output_to_client = new PrintWriter(clientToclientRequest.getOutputStream(), true);				
 				System.out.println(input_from_client.readLine());

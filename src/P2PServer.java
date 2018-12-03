@@ -75,6 +75,22 @@ public class P2PServer extends P2PServerAbstract implements Runnable {
 						output.println(rfc.getRFCNumber() + " " + rfc.getTitle() + " " + rfc.getRFCHostName());
 					}
 				} 
+				else if (line.startsWith("GET")) {
+					message.add(line); //Host: one.ncsu.edu
+					message.add(input.readLine());
+					String clientRequestHostName = message.get(1).split(" ")[1];
+					Integer port = null;
+					for (RFCIndex rfc : rfcIndexList) {
+						if (rfc.getRFCHostName().equals(clientRequestHostName)) {
+							for (ActivePeer ap : activePeerList) {
+								if (ap.getHostName().equals(rfc.getRFCHostName())) {
+									port = ap.getIndex();
+								}
+							}
+						}
+					}
+					output.println(String.valueOf(port));
+				}
 				else if (line.startsWith("LOOKUP")) {
 					int code = -2; // not found
 					Integer port = null;
