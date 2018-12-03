@@ -70,6 +70,7 @@ public class Client extends P2PClientAbstract {
 			}
 			else if(line.startsWith("LIST ALL") && line.split(" ").length == 3) {
 				String message = line.split(" ")[2];
+				System.out.println("-----------------------------------------------------------------------------------------------------");
 				if(!message.equals(VERSION)) {
 					System.out.println(responseCode(-1));
 					continue;
@@ -85,11 +86,13 @@ public class Client extends P2PClientAbstract {
 				}
 				else
 					System.out.println("No Entries Found");
+				System.out.println("-----------------------------------------------------------------------------------------------------");
 			}
 			else if(line.startsWith("LOOKUP")) {
 				output_to_server.println(line); //LOOKUP RFC 123 P2P-CI/1.0
 				output_to_server.println(br.readLine()); //Host: 152.46.17.34
 				output_to_server.println(br.readLine()); //Title: A Proferred Official ICP
+				System.out.println("-----------------------------------------------------------------------------------------------------");
 				if(!line.split(" ")[3].equals(VERSION)) {
 					System.out.println(responseCode(-1));
 					continue;
@@ -99,6 +102,7 @@ public class Client extends P2PClientAbstract {
 				String s;
 				while (!(s = input_from_server.readLine()).equals(EOF))
 					System.out.println(s);
+				System.out.println("-----------------------------------------------------------------------------------------------------");
 			}
 			else if (line.startsWith("GET")) {
 				List<String> message = new ArrayList<>();
@@ -106,11 +110,13 @@ public class Client extends P2PClientAbstract {
 				message.add(br.readLine()); // Host: somehost.csc.ncsu.edu
 				message.add(br.readLine()); // OS: Mac OS 10.4.1
 				message.add(br.readLine()); //Title: A Proferred Official ICP
+				System.out.println("-----------------------------------------------------------------------------------------------------");
 				if(!message.get(0).split(" ")[3].equals(VERSION)) {
 					System.out.println(responseCode(-1));
 					continue;
 				}
 				
+				System.out.println(responseCode(1));
 				Integer RFCNumber = Integer.valueOf(message.get(0).split(" ")[2]);
 				output_to_server.println(line);
 				//System.out.println("Enter Port Number of Client with RFC from LOOK UP request");
@@ -125,7 +131,7 @@ public class Client extends P2PClientAbstract {
 					Socket clientToclientRequest = new Socket(message.get(1).split(" ")[1], Integer.valueOf(portify));
 					BufferedReader input_from_client = new BufferedReader(new InputStreamReader(clientToclientRequest.getInputStream()));
 					PrintWriter output_to_client = new PrintWriter(clientToclientRequest.getOutputStream(), true);				
-					System.out.println(input_from_client.readLine());
+					//System.out.println(input_from_client.readLine());
 					
 					String fileName = RFCNumber + ".txt"; //123.txt
 					output_to_client.println(fileName);
@@ -136,7 +142,12 @@ public class Client extends P2PClientAbstract {
 					
 					File output_file = new File(System.getProperty("user.dir") + "/" + host_name + "/" + fileName);
 		            PrintWriter pw = new PrintWriter(output_file);
-					String s;
+		            System.out.println(input_from_client.readLine());
+		            System.out.println(input_from_client.readLine());
+		            System.out.println(input_from_client.readLine());
+		            System.out.println(input_from_client.readLine());
+		            
+		            String s;
 					while (!(s = input_from_client.readLine()).equals(EOF))
 						pw.println(s);
 					
@@ -144,7 +155,7 @@ public class Client extends P2PClientAbstract {
 						pw.close();
 					
 					System.out.println("File downloaded in directory: " + System.getProperty("user.dir") + "/" + host_name + "/" + fileName);
-					
+					System.out.println("-----------------------------------------------------------------------------------------------------");
 					//Add this RFC to this client
 					String first_line = message.get(0).replace("GET", "ADD");
 					String second_line = new String("Host: " + host_name);
@@ -163,7 +174,7 @@ public class Client extends P2PClientAbstract {
 					String t;
 					while (!(t = input_from_server.readLine()).equals(EOF))
 						System.out.println(t);
-					
+					System.out.println("-----------------------------------------------------------------------------------------------------");
 					clientToclientRequest.close();
 				}
 			}
@@ -171,15 +182,18 @@ public class Client extends P2PClientAbstract {
 				output_to_server.println(line);
 				output_to_server.println(host_name);
 				String s;
+				System.out.println("-----------------------------------------------------------------------------------------------------");
 				while (!(s = input_from_server.readLine()).equals(EOF))
 					System.out.println(s);
-				
+				System.out.println("-----------------------------------------------------------------------------------------------------");
 				if(client_server_connection != null)
 					client_server_connection.close();
 				System.exit(1);
 			}
 			else {
+				System.out.println("-----------------------------------------------------------------------------------------------------");
 				System.out.println("Invalid Command! Try Again.");
+				System.out.println("-----------------------------------------------------------------------------------------------------");
 			}
 			//System.out.println("ENTER ADD, LIST ALL, LOOKUP, GET or END requests");
 		}
