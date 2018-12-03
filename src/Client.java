@@ -63,8 +63,10 @@ public class Client extends P2PClientAbstract {
 				output_to_server.println(message.get(2));
 				output_to_server.println(message.get(3));
 				String s;
+				System.out.println("-----------------------------------------------------------------------------------------------------");
 				while (!(s = input_from_server.readLine()).equals(EOF))
 					System.out.println(s);
+				System.out.println("-----------------------------------------------------------------------------------------------------");
 			}
 			else if(line.startsWith("LIST ALL") && line.split(" ").length == 3) {
 				String message = line.split(" ")[2];
@@ -73,6 +75,7 @@ public class Client extends P2PClientAbstract {
 					continue;
 				}
 				
+				System.out.println(responseCode(1));
 				output_to_server.println(line);
 				Integer count = Integer.valueOf(input_from_server.readLine());
 				if(count > 0) {
@@ -84,9 +87,15 @@ public class Client extends P2PClientAbstract {
 					System.out.println("No Entries Found");
 			}
 			else if(line.startsWith("LOOKUP")) {
-				output_to_server.println(line);
-				output_to_server.println(br.readLine());
-				output_to_server.println(br.readLine());
+				output_to_server.println(line); //LOOKUP RFC 123 P2P-CI/1.0
+				output_to_server.println(br.readLine()); //Host: 152.46.17.34
+				output_to_server.println(br.readLine()); //Title: A Proferred Official ICP
+				if(!line.split(" ")[3].equals(VERSION)) {
+					System.out.println(responseCode(-1));
+					continue;
+				}
+				
+				System.out.println(responseCode(1));
 				String s;
 				while (!(s = input_from_server.readLine()).equals(EOF))
 					System.out.println(s);

@@ -76,7 +76,11 @@ public class P2PServer extends P2PServerAbstract implements Runnable {
 					
 					output.println(rfcIndexList.size());
 					for (RFCIndex rfc : rfcIndexList) {
-						output.println(rfc.getRFCNumber() + " " + rfc.getTitle() + " " + rfc.getRFCHostName());
+						for(ActivePeer ap : activePeerList) {
+							if(ap.getHostName().equals(rfc.getRFCHostName())) {
+								output.println(rfc.getRFCNumber() + " " + rfc.getTitle() + " " + rfc.getRFCHostName() + " " + ap.getIndex());
+							}
+						}
 					}
 				} 
 				else if (line.startsWith("GET")) {
@@ -122,10 +126,14 @@ public class P2PServer extends P2PServerAbstract implements Runnable {
 							code = 1;
 					}
 					
-					if (code == 1) {
+					if (code == 1 && port != null) {
 						for(String str : set)
 							output.println(str);
-					} else {
+					} 
+					else if(port == null) {
+						output.println("No such entry found");
+					}
+					else {
 						output.println(responseCode(code));
 					}
 					output.println(EOF);
