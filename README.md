@@ -6,9 +6,12 @@
 3) Instance 1: execute "Server" (starts the server).
 4) Instance 2: execute "Client":
 - Enter Server Address: "Enter Instance 1 IP_Address which is Server"
+- Enter Host Name: "Enter Client IP_Address"
+- Enter Port Number: "Enter Client Port Number". (Use 3000, 4000 or 5000 as I updated IP tables to listen to these ports)
 5) Download RFC files on Instance 2 under directory structure "P2P-Centralized-Index/src/<ip_address_instance_2>/
 6) Instance 3: execute "Client" and so on.
-7) All the Client requests are logged in Server console.
+
+**PS:** All the Client requests are logged in Server console. Refer Makefile for code execution or IP tables update.
 
 #CSC-573 Internet Protocols Project 1 Fall 2018
 -----------------------------------------------
