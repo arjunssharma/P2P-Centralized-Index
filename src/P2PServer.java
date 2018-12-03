@@ -83,16 +83,16 @@ public class P2PServer extends P2PServerAbstract implements Runnable {
 					System.out.println("------------------- GET request from peer -------------------");
 					message.add(line); //Host: one.ncsu.edu
 					message.add(input.readLine());
+					message.add(input.readLine());
 					String clientRequestHostName = message.get(1).split(" ")[1];
+					Integer RFCNumber = Integer.valueOf(message.get(2));
 					Integer port = null;
 					for (RFCIndex rfc : rfcIndexList) {
-						if (rfc.getRFCHostName().equals(clientRequestHostName)) {
-							for (ActivePeer ap : activePeerList) {
-								if (ap.getHostName().equals(rfc.getRFCHostName())) {
+							for (ActivePeer ap : activePeerList) { //if (rfc.getRFCHostName().equals(clientRequestHostName)
+								if (rfc.getRFCHostName().equals(clientRequestHostName) && ap.getHostName().equals(rfc.getRFCHostName()) && RFCNumber.equals(rfc.getRFCNumber())) {
 									port = ap.getIndex();
 								}
 							}
-						}
 					}
 					output.println(String.valueOf(port));
 				}
@@ -112,16 +112,14 @@ public class P2PServer extends P2PServerAbstract implements Runnable {
 					String clientRequestHostName = message.get(1).split(" ")[1];
 					String clientRequestTitle = message.get(2).split(": ")[1];
 					for (RFCIndex rfc : rfcIndexList) {
-						if (rfc.getRFCNumber().equals(clientRequestRFCNumber) || rfc.getTitle().equals(clientRequestTitle) || rfc.getRFCHostName().equals(clientRequestHostName)) {
 							for (ActivePeer ap : activePeerList) {
-								if (ap.getHostName().equals(rfc.getRFCHostName())) {
+								if (ap.getHostName().equals(rfc.getRFCHostName()) && clientRequestRFCNumber.equals(rfc.getRFCNumber())) {
 									port = ap.getIndex();
 								}
 							}
 
 							set.add("Host: " + rfc.getRFCHostName() + "\nPort: " + String.valueOf(port));
 							code = 1;
-						}
 					}
 					
 					if (code == 1) {

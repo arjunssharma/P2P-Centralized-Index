@@ -96,44 +96,67 @@ public class Client extends P2PClientAbstract {
 				message.add(line); // GET RFC 1234 P2P-CI/1.0
 				message.add(br.readLine()); // Host: somehost.csc.ncsu.edu
 				message.add(br.readLine()); // OS: Mac OS 10.4.1
+				message.add(br.readLine()); //Title: A Proferred Official ICP
 				if(!message.get(0).split(" ")[3].equals(VERSION)) {
 					System.out.println(responseCode(-1));
 					continue;
 				}
 				
+				Integer RFCNumber = Integer.valueOf(message.get(0).split(" ")[2]);
 				output_to_server.println(line);
 				//System.out.println("Enter Port Number of Client with RFC from LOOK UP request");
 				output_to_server.println(message.get(1));
+				output_to_server.println(RFCNumber);
 				String portify = input_from_server.readLine();
 				if(portify == null || portify.equals("")) {
 					System.out.println("Port number not found in RFC list");
 					continue;
 				}
-				
-				Integer RFCNumber = Integer.valueOf(message.get(0).split(" ")[2]);
-				Socket clientToclientRequest = new Socket(message.get(1).split(" ")[1], Integer.valueOf(portify));
-				BufferedReader input_from_client = new BufferedReader(new InputStreamReader(clientToclientRequest.getInputStream()));
-				PrintWriter output_to_client = new PrintWriter(clientToclientRequest.getOutputStream(), true);				
-				System.out.println(input_from_client.readLine());
-				
-				String fileName = RFCNumber + ".txt"; //123.txt
-				output_to_client.println(fileName);
-						
-				File dir = new File(System.getProperty("user.dir") + "/" + host_name);
-					if (!dir.exists()) 
-						dir.mkdirs();
-				
-				File output_file = new File(System.getProperty("user.dir") + "/" + host_name + "/" + fileName);
-	            PrintWriter pw = new PrintWriter(output_file);
-				String s;
-				while (!(s = input_from_client.readLine()).equals(EOF))
-					pw.println(s);
-				
-				if(pw != null)
-					pw.close();
-				
-				System.out.println("File downloaded in directory: " + System.getProperty("user.dir") + "/" + host_name + "/" + fileName);
-				clientToclientRequest.close();
+				else {
+					Socket clientToclientRequest = new Socket(message.get(1).split(" ")[1], Integer.valueOf(portify));
+					BufferedReader input_from_client = new BufferedReader(new InputStreamReader(clientToclientRequest.getInputStream()));
+					PrintWriter output_to_client = new PrintWriter(clientToclientRequest.getOutputStream(), true);				
+					System.out.println(input_from_client.readLine());
+					
+					String fileName = RFCNumber + ".txt"; //123.txt
+					output_to_client.println(fileName);
+							
+					File dir = new File(System.getProperty("user.dir") + "/" + host_name);
+						if (!dir.exists()) 
+							dir.mkdirs();
+					
+					File output_file = new File(System.getProperty("user.dir") + "/" + host_name + "/" + fileName);
+		            PrintWriter pw = new PrintWriter(output_file);
+					String s;
+					while (!(s = input_from_client.readLine()).equals(EOF))
+						pw.println(s);
+					
+					if(pw != null)
+						pw.close();
+					
+					System.out.println("File downloaded in directory: " + System.getProperty("user.dir") + "/" + host_name + "/" + fileName);
+					
+					//Add this RFC to this client
+					String first_line = message.get(0).replace("GET", "ADD");
+					String second_line = new String("Host: " + host_name);
+					String third_line = new String("Port: " + uploadPort);
+					String forth_line = message.get(3);
+					message = new ArrayList<>();
+					message.add(first_line); // ADD RFC 1234 P2P-CI/1.0
+					message.add(second_line); // Host: thishost.csc.ncsu.edu
+					message.add(third_line); // Port: 5678
+					message.add(forth_line); // Title: A Proferred Official ICP
+					
+					output_to_server.println(message.get(0));
+					output_to_server.println(message.get(1));
+					output_to_server.println(message.get(2));
+					output_to_server.println(message.get(3));
+					String t;
+					while (!(t = input_from_server.readLine()).equals(EOF))
+						System.out.println(t);
+					
+					clientToclientRequest.close();
+				}
 			}
 			else if(line.startsWith("END")) {
 				output_to_server.println(line);
