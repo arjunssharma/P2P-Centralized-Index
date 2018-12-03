@@ -7,7 +7,7 @@
 4) Instance 2: execute "Client":
 - Enter Server Address: "Enter Instance 1 IP_Address which is Server"
 - Enter Host Name: "Enter Client IP_Address"
-- Enter Port Number: "Enter Client Port Number". (Use 3000, 4000 or 5000 as I updated IP tables to listen to these ports)
+- Enter Port Number: "Enter Client Upload Port Number". (Use 3000, 4000 or 5000 as I updated IP tables to listen to these ports)
 5) Download RFC files on Instance 2 under directory structure "P2P-Centralized-Index/src/<ip_address_instance_2>/
 6) Instance 3: execute "Client" and so on.
 
