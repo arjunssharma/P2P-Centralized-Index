@@ -1,3 +1,17 @@
+#Steps to Run the Program:
+--------------------------
+
+1) Open 3 instances of VCL say 1 for Server, and 2 for Client.
+2) Execute command "make" on all 3 instances of VCL. This will install jdk, create Server, Client alias to run the program and open ports to listen for server viz 7734 and assuming client ports to be 3000, 4000, & extra 5000.
+3) Instance 1: execute "Server" (starts the server).
+4) Instance 2: execute "Client":
+- Enter Server Address: "Enter Instance 1 IP_Address which is Server"
+5) Download RFC files on Instance 2 under directory structure "P2P-Centralized-Index/src/<ip_address_instance_2>/
+6) Instance 3: execute "Client" and so on.
+7) All the Client requests are logged in Server console.
+
+
+
 #CSC-573 Internet Protocols Project 1 Fall 2018
 -----------------------------------------------
 
